@@ -29,6 +29,18 @@ jobs:
         
   check:
       runs-on: ubuntu-latest
+      services:
+        postgres:
+          image: postgres:12.5
+          env:
+            POSTGRES_DB: ${{ secrets.DB_NAME }}
+            POSTGRES_USER: ${{ secrets.DB_USER }}
+            POSTGRES_PASSWORD: ${{ secrets.DB_PASS }}
+          ports:
+            - 5432:5432
+            # needed because the postgres container does not provide a healthcheck
+          options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
       steps:
       - uses: actions/checkout@v2
 
@@ -41,7 +53,15 @@ jobs:
         run: pip install -r ./django-test/requirements-dev.txt
 
       - name: Migrate db
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
         run: python ./django-test/manage.py migrate
 
       - name: Test with pytest
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
         run: pytest
