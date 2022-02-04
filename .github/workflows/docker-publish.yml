@@ -14,9 +14,7 @@ jobs:
       - name: login heroku 
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_KEY }}
-        run: |
-          heroku container:login
-          heroku config:set SECRET_KEY= ${{ secrets.SECRET_KEY }}
+        run: heroku container:login
 
       - name: Build the Docker image
         run: docker build -t web:latest .
