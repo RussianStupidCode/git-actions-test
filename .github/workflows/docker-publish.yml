@@ -38,10 +38,10 @@ jobs:
           python-version: 3.8
 
       - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r ./django-test/requirements-dev.txt
 
       - name: Migrate db
-        run: python manage.py migrate
+        run: python ./django-test/manage.py migrate
 
       - name: Test with pytest
         run: pytest
