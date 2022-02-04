@@ -22,6 +22,7 @@ jobs:
       - name: Push the Docker image to the Heroku registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_KEY }}
+          HEROKU_DEPLOY: True
         run: |
           heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
           heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
@@ -54,6 +55,8 @@ jobs:
 
       - name: Migrate db
         env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: ${{ secrets.DEBUG }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
