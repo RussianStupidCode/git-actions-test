@@ -5,4 +5,4 @@ RUN pip install -r /app/requirements-dev.txt
 
 WORKDIR /app
 
-CMD ["gunicron", "django-test:app"]
+CMD ["gunicorn", "django-testing:app"]
