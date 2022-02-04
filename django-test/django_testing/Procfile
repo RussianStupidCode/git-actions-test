@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicron django_testing.wsgi
+web: gunicorn django_testing.wsgi
